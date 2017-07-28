@@ -1,6 +1,6 @@
 {
   "name": "dynongo-pager",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Easy paging for DynamoDB with dynongo",
   "license": "MIT",
   "repository": "SamVerschueren/dynongo-pager",
@@ -27,13 +27,13 @@
     "lib"
   ],
   "keywords": [
-		"dynamodb",
-		"aws",
-		"dynongo",
-		"database",
-		"db",
-		"paging",
-		"pages"
+    "dynamodb",
+    "aws",
+    "dynongo",
+    "database",
+    "db",
+    "paging",
+    "pages"
   ],
   "devDependencies": {
     "@types/node": "^8.0.17",
