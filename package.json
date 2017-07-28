@@ -1,0 +1,52 @@
+{
+  "name": "dynongo-pager",
+  "version": "0.0.0",
+  "description": "Easy paging for DynamoDB with dynongo",
+  "license": "MIT",
+  "repository": "SamVerschueren/dynongo-pager",
+  "author": {
+    "name": "Sam Verschueren",
+    "email": "sam.verschueren@gmail.com",
+    "url": "github.com/SamVerschueren"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "prepublish": "npm run clean && npm run compile -- --declaration",
+    "test": "npm run lint && nyc ava",
+    "pretest": "npm run compile -- --sourceMap",
+    "compile": "tsc -p tsconfig.json",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "lint": "tslint \"src/**/*.ts\"",
+    "clean": "del-cli -f test lib *.js *.js.map *.d.ts"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "lib"
+  ],
+  "keywords": [
+		"dynamodb",
+		"aws",
+		"dynongo",
+		"database",
+		"db",
+		"paging",
+		"pages"
+  ],
+  "devDependencies": {
+    "@types/node": "^8.0.17",
+    "ava": "*",
+    "aws-sdk": "^2.91.0",
+    "del-cli": "^1.1.0",
+    "dynongo": "^0.14.0",
+    "nyc": "^11.0.3",
+    "sinon": "^2.4.1",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.2"
+  },
+  "peerDependencies": {
+    "dynongo": "^0.14.0"
+  }
+}
