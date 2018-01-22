@@ -24,6 +24,23 @@ test('retrieve all results', async t => {
 	});
 });
 
+test('retrieve page with where', async t => {
+	const result = await m(t.context.table, {foo: 'bar'}, {
+		limit: 20,
+		where: {
+			bar: '1'
+		},
+		elementIndex: () => ['foo', 'bar']
+	});
+
+	t.deepEqual(result, {
+		items: [
+			{ foo: 'bar', bar: '1' }
+		],
+		paging: {}
+	});
+});
+
 test('retrieve all results in reverse order', async t => {
 	const result = await m(t.context.table, {foo: 'bar'}, {
 		limit: 20,

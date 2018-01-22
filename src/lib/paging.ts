@@ -9,6 +9,7 @@ export interface Options {
 	indexName?: string;
 	select?: string;
 	sort?: 1 | -1;
+	where?: any;
 	elementIndex(indexName?: string): string[];
 }
 
@@ -48,6 +49,10 @@ export async function paging(table: any, index: any, options: Options) {
 	if (options.after || options.before) {
 		// If `after` or `before` is provided, start from that token
 		findQuery = findQuery.startFrom(JSON.parse(base64.decode(options.after || options.before)));
+	}
+
+	if (options.where) {
+		findQuery = findQuery.where(options.where);
 	}
 
 	const items = await findQuery.exec();

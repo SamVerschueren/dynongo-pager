@@ -135,6 +135,12 @@ Type: `string`
 
 Space separated list of the values you want to retrieve.
 
+##### where
+
+Type: `object`
+
+Filter object.
+
 ##### sort
 
 Type: `number`<br>

@@ -14,6 +14,19 @@ const base = {
 	ScanIndexForward: true
 };
 
+const whereBase = {
+	...base,
+	ExpressionAttributeNames: {
+		'#k_foo': 'foo',
+		'#k_bar': 'bar'
+	},
+	ExpressionAttributeValues: {
+		':v_foo': 'bar',
+		':v_bar': '1'
+	},
+	FilterExpression: '#k_bar=:v_bar'
+};
+
 const items = [
 	{ foo: 'bar', bar: '1' },
 	{ foo: 'bar', bar: '2' },
@@ -28,6 +41,7 @@ export function stub(test) {
 
 		const queryStub = sinon.stub(db.dynamodb, 'query');
 		queryStub.withArgs(base).yields(undefined, {Items: items});
+		queryStub.withArgs(whereBase).yields(undefined, {Items: items.filter(x => x.bar === '1')});
 		queryStub.withArgs(Object.assign({}, base, {ScanIndexForward: false})).yields(undefined, {Items: reversedItems});
 		queryStub.withArgs(Object.assign({}, base, {Limit: 2})).yields(undefined, { Items: items.slice(0, 2) });
 		queryStub.withArgs(Object.assign({}, base, {Limit: 2, ExclusiveStartKey: {foo: 'bar', bar: '1'}})).yields(undefined, {Items: items.slice(1, 3)});
