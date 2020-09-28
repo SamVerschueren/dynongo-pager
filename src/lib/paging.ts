@@ -1,7 +1,7 @@
 import * as base64 from './util/base64';
 
 export interface Options {
-	limit: number;
+	limit?: number;
 	after?: string;
 	before?: string;
 	from?: string;
@@ -39,12 +39,17 @@ export async function paging(table: any, index: any, options: Options) {
 	}, options);
 
 	const sort = (options.before && !options.after ? -1 : 1) * options.sort;
+	const hasLimit = typeof options.limit === 'number';
 
 	let findQuery = table
 		.find(index, options.indexName)
 		.select(options.select)
-		.limit(options.limit + 1)
 		.sort(sort);
+
+	if (hasLimit) {
+		// If a limit is provided, retrieve one item extra
+		findQuery = findQuery.limit(options.limit + 1);
+	}
 
 	if (options.after || options.before) {
 		// If `after` or `before` is provided, start from that token
@@ -55,11 +60,14 @@ export async function paging(table: any, index: any, options: Options) {
 		findQuery = findQuery.where(options.where);
 	}
 
-	const items = await findQuery.exec();
+	const queryResult = await findQuery.raw().exec();
+
+	const items = queryResult.Items;
+	const lastEvaluatedKey = queryResult.LastEvaluatedKey;
 
 	const indexProperties = options.elementIndex(options.indexName);
 
-	if (items.length > options.limit) {
+	if (lastEvaluatedKey || (hasLimit && items.length > options.limit)) {
 		// If we have more data, pop off the last element because it is part of the following page
 		items.pop();
 

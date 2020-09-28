@@ -85,19 +85,18 @@ Partition key.
 
 #### options
 
-##### limit
-
-*Required*<br>
-Type: `number`
-
-Limit of items per page.
-
 ##### elementIndex
 
 *Required*<br>
 Type: `function`
 
 Function that should return the properties being part of the index. The function accepts an argument being the name of the index that's being used to query the database.
+
+##### limit
+
+Type: `number`
+
+Limit of items per page. If not provided, the page will retrieve as many items as possible which is 1MB in size.
 
 ##### after
 

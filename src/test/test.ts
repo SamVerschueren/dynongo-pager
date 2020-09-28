@@ -58,6 +58,22 @@ test('retrieve all results in reverse order', async t => {
 	});
 });
 
+test('retrieve as many items as possible and check for `LastEvalutedKey`', async t => {
+	const result = await m(t.context.table, {foo: 'bar'}, {
+		limit: undefined,
+		elementIndex: () => ['foo', 'bar']
+	});
+
+	t.deepEqual(result, {
+		items: [
+			{ foo: 'bar', bar: '1' }
+		],
+		paging: {
+			after: base64.encode(JSON.stringify({foo: 'bar', bar: '1'}))
+		}
+	});
+});
+
 test('retrieve first page', async t => {
 	const result = await m(t.context.table, {foo: 'bar'}, {
 		limit: 1,
@@ -123,6 +139,24 @@ test('retrieve last page', async t => {
 		],
 		paging: {
 			before: base64.encode(JSON.stringify({foo: 'bar', bar: '3'}))
+		}
+	});
+});
+
+test('retrieve last page with before', async t => {
+	const result = await m(t.context.table, {foo: 'bar'}, {
+		limit: 1,
+		before: base64.encode(JSON.stringify({foo: 'bar', bar: '3'})),
+		elementIndex: () => ['foo', 'bar']
+	});
+
+	t.deepEqual(result, {
+		items: [
+			{ foo: 'bar', bar: '2' }
+		],
+		paging: {
+			after: base64.encode(JSON.stringify({foo: 'bar', bar: '2'})),
+			before: base64.encode(JSON.stringify({foo: 'bar', bar: '2'}))
 		}
 	});
 });
