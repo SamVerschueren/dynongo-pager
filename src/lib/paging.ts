@@ -67,7 +67,7 @@ export async function paging(table: any, index: any, options: Options) {
 
 	const indexProperties = options.elementIndex(options.indexName);
 
-	if (lastEvaluatedKey || (hasLimit && items.length > options.limit)) {
+	if ((lastEvaluatedKey && items.length) || (hasLimit && items.length > options.limit)) {
 		// If we have more data, pop off the last element because it is part of the following page
 		items.pop();
 
